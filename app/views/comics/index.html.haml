@@ -1,0 +1,16 @@
+.comics
+  - comics.each do |comic|
+    .comic[comic]{class: comic.favourite ? 'favourite' : ''}
+      .thumbnail
+        %img{src: comic.thumbnail_path}
+      .overlay
+        .background
+        .heart
+        .details
+          .title= comic.title
+          %span.number= comic.issue_number
+          %span.date= comic.date.year
+
+.paginator
+  .prev= previous_page_link(page)
+  .next= next_page_link(page)

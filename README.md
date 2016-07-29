@@ -1,40 +1,47 @@
-# Streetbees Full Stack Engineer (Ruby) position
-
-[Role description](https://github.com/Streetbees/full-stack-engineer-ruby/wiki/Role-description)
-
-[Requirements](https://github.com/Streetbees/full-stack-engineer-ruby/wiki/Requirements)
-
-[Benefits](https://github.com/Streetbees/full-stack-engineer-ruby/wiki/Benefits)
+# Marvelous - Marvel Comics Browser
 
 
-### To apply you shoud follow the instructions below:
+## Get up and running
 
-- Fork this repo;
-- Look at the specification below and do your thing;
-- When ready open a pull into the master branch of this repo;
-- We will then review the code and if necessary discuss within the pull request.
+To install and run you'll need to have:
 
-### Challenge spec:
+* ruby 2.3
+* bundler
+* native build tools (on my case - ubuntu - `sudo apt install build-essentials`)
+* native sqlite3 dev libs (`sudo apt install sqlite3-dev`)
 
-- Description:
-    - Using the best API available on this side of the universe, https://developer.marvel.com/ , make a simple app that allows the user to scroll trough all the comics ever released from the most recent to the oldest (and please, let me see the cover picture while I do it!);
-    - Make it easy to search amongs the comics;
-    - Let me upvote my favorite comics.
+Next you'll need the usual bootstrap commands:
 
-- Functional requirements (Using the Job to be Done framework):
-    - When I open the page I want to see a list of all Marvel’s released comic books covers ordered from most recent to the oldest so I can scroll trough the the Marvel universe;
-    - When I see the list of comics I want to be able to search by character (ex. deadpool) so that I can find my favorite comics;
-    - When I see the list of comics I want to be able to upvote any of them so that the most popular are easy to find in the future.
+* `bundle install`
+* create a `.env` file with your Marvel API keys (I've included mine but on a normal project I wouldn't)
+* `bin/rake db:create && bin/rake db:migrate`
 
-- Technical requirements
-    - Developed using mainly Ruby and Javascript.
-    - Implement the design that is present inside the assets folder (HTML + CSS)
+This ought to be enough to get you going...
 
-- Evaluation Criteria
-    - you create maintainable code;
-    - you care about the user experience ;
-    - you pay attention to details;
-    - you develop in a scalable manner.
 
-- Deliverables
-    - The forked version of this repo.
+## Running tests
+
+To run tests just `bin/rspec spec` on the project root.
+
+**NOTE:** for some very very odd reason, I get a false negative in one test on cold runs (might be something weird with spring, idk)
+
+
+## Architecture and Design
+
+I've detoured a bit from normal Rails Architecture into something resembling (from a far) the Hexagonal Arch.
+I've attached a small schematic @ docs/diagram.jpg
+
+Rails sits on the outer part of the app - as an adapted that could be exchanged by some other one - while the core tries its best to be rails-free (except for a small part that wouldn't be all that hard to extract but it would be overkill in this situation).
+
+**Controllers** communicate with **Commands** that in turn ask for data to **Repositories**.
+The **Commands** expose a set of callbacks that the **Controllers** can latch onto.
+
+**Repositories** communicate with the outside world (aka Marvel API) and translate the responses into meaningful objects to the system.
+
+All over the core, classes implement a form of Dependency Injection to allow for easy testing and for the code to be more meaningful.
+
+
+## A note on some missing tests
+
+There should be a couple of tests to cover the favorite toggle thingy, but setting up Cucumber just for something like that would by far outweigh the benefit, so I left it for last, but now time as ran out, so I guess I'll leave it uncovered.. sorry!
+

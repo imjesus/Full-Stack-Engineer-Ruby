@@ -1,0 +1,39 @@
+@import 'variables';
+@import 'comics';
+@import 'mixins';
+@import url(https://fonts.googleapis.com/css?family=Bangers);
+
+html, body {
+  margin: 0;
+  padding: 0;
+  color: $clr-text;
+  background-color: $clr-background;
+  font-family: 'Bangers', sans-serif;
+}
+
+header {
+  @include clearfix;
+
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  opacity: 0.9;
+  width: 100%;
+  background-color: $clr-marvel-red;
+  padding: 20px 0;
+  text-align: center;
+
+  form input {
+    line-height: 30px;
+    border-radius: 3px;
+    padding: 0 10px;
+    border: 1px solid silver;
+    width: 350px;
+  }
+}
+
+.content {
+  margin: auto;
+  margin-top: 150px;
+  max-width: 1200px;
+}
